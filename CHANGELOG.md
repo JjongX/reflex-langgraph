@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 (unreleased)
+## 0.1.0 (2026-10-20)
 
 First version.
 
@@ -34,7 +34,7 @@ First version.
   (`files.FORMATS`); an app adds formats as `FileFormat` entries, which `/health` passes on
   to the paperclip. Every file is checked against its first bytes. Workers receive files
   by id, and tools read them with `attached_file`.
-- **Persistence:** `SqliteThreadStore` and `sqlite_checkpointer` (`[sqlite]` extra).
+- **Persistence:** `SqliteThreadStore` and `sqlite_checkpointer`.
 - **Settings:** `.env` files (`load_env_file`, `env_path`, `reflex-langgraph init-env`).
 - **Docs:** five examples, NumPy-style docstrings with examples that run, and a Sphinx site
   built from the code.

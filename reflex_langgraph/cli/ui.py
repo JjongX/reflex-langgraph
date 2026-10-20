@@ -205,7 +205,7 @@ def main(args):
     try:
         import reflex  # noqa: F401
     except ImportError:
-        print('reflex is not installed: pip install "reflex-langgraph[ui]"', file=sys.stderr)
+        print("reflex is not installed: pip install reflex-langgraph", file=sys.stderr)
         return 2
     api = opts["api"]
     try:

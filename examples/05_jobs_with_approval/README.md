@@ -9,7 +9,7 @@ Run it as in [Running](../README.md#running), with `--app-dir 05_jobs_with_appro
 
 Its own setting is in the shared `examples/.env`, under "05_jobs_with_approval only":
 `JOBS_EXAMPLE_DATA_DIR=data` keeps conversations and pending approvals across backend
-restarts, in `examples/data/` (`pip install "../..[sqlite]"`).
+restarts, in `examples/data/`.
 
 Try: *"Start a 4-step countdown job named demo1."* An approval card appears in the chat;
 **Approve** it, and the job starts and shows in the Jobs panel.

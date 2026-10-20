@@ -2,9 +2,9 @@
 The checkpoint submodule keeps conversations' graph state durable.
 
 :func:`~reflex_langgraph.agents.build_graph` accepts any LangGraph checkpointer. :func:`sqlite_checkpointer` is the
-one-line durable choice (``pip install "reflex-langgraph[sqlite]"``). Any other LangGraph
-checkpointer (e.g. Postgres) works too, but the server itself runs as one process: active
-runs live in its memory, so a shared database does not make several workers safe.
+one-line durable choice. Any other LangGraph checkpointer (e.g. Postgres) works too, but the
+server itself runs as one process: active runs live in its memory, so a shared database does
+not make several workers safe.
 """
 
 from __future__ import annotations
@@ -94,13 +94,14 @@ def sqlite_checkpointer(path: Union[str, Path]) -> BaseCheckpointSaver:
     Raises
     ------
     ImportError
-        If the ``[sqlite]`` extra is not installed.
+        If ``langgraph-checkpoint-sqlite`` or ``aiosqlite`` is missing.
     """
     try:
         import aiosqlite  # noqa: F401
         from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver  # noqa: F401
     except ImportError:
-        raise ImportError('sqlite_checkpointer needs: pip install "reflex-langgraph[sqlite]"') from None
+        raise ImportError("sqlite_checkpointer needs langgraph-checkpoint-sqlite and aiosqlite: "
+                          "pip install reflex-langgraph") from None
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     return _LazyAsyncSqliteSaver(path)

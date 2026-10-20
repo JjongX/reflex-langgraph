@@ -46,7 +46,7 @@ addresses).
 ## Install
 
 ```bash
-pip install "reflex-langgraph[ui,server,google]"   # extras: ui, server, sqlite, s3, google, openai, anthropic
+pip install "reflex-langgraph[google]"   # or [openai] / [anthropic]; add s3 for S3 file storage
 ```
 
 ## Quick start
@@ -125,23 +125,24 @@ For your own page layout, build a Reflex app from the components
 
 ## Examples
 
-Five runnable apps, simplest first, in [`examples/`](examples) (how to run them is there):
-basic chat, a supervisor team, a three-level hierarchy, human in the loop, and jobs with
-approval.
+Five runnable apps, simplest first, in
+[`examples/`](https://github.com/JjongX/reflex-langgraph/tree/main/examples) (how to run them
+is there): basic chat, a supervisor team, a three-level hierarchy, human in the loop, and
+jobs with approval.
 
 ## Documentation
 
 The API reference, the command line and the changelog are built from the code:
 
 ```bash
-pip install -e ".[docs,ui,server,sqlite,google]"
+pip install -e ".[docs,google]"
 make -C docs html          # -> docs/_build/html/index.html
 ```
 
 ## Development
 
 ```bash
-pip install -e ".[dev,ui,google]"
+pip install -e ".[dev,google]"
 pytest -q                  # tests/test_docs.py also checks the docstring style
 ```
 

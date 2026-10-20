@@ -6,7 +6,7 @@
     reflex-langgraph ui                                         # another shell, also in examples/
 
 Settings come from ``examples/.env`` (see ``examples/.env.example``): GOOGLE_API_KEY, and
-JOBS_EXAMPLE_DATA_DIR to keep conversations across restarts (needs the [sqlite] extra).
+JOBS_EXAMPLE_DATA_DIR to keep conversations across restarts.
 
 There is no login: whoever opens the UI asks for a job, approves or rejects it on the
 approval card, and follows it in the Jobs panel.
