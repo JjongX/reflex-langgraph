@@ -1,0 +1,28 @@
+model:
+  id: google_genai:gemini-2.5-flash
+  temperature: 0
+  kwargs:
+    include_thoughts: true      # stream Gemini's thinking summaries to the chat
+entry: supervisor
+agents:
+  - name: supervisor
+    prompt: |
+      You help the user run "countdown" jobs and check on them.
+      Delegate: questions about existing jobs -> inspector; starting a job -> operator.
+      Never claim a job started unless the operator reports it.
+    workers: [inspector, operator]
+
+  - name: inspector
+    description: Lists jobs and reports a job's status and progress. Read-only.
+    prompt: Report job state exactly as the tools return it.
+    tools: [list_jobs, job_status, countdown_preflight]
+
+  - name: operator
+    description: Starts countdown jobs after a preflight. Every start needs human approval.
+    prompt: |
+      Always run countdown_preflight first. Only submit if it reports ok.
+      Pick a short, unique job_id if the user did not give one.
+    tools: [countdown_preflight, countdown_submit, cancel_job]
+    approve:
+      countdown_submit: [approve, edit, reject]
+      cancel_job: [approve, reject]

@@ -1,0 +1,34 @@
+# A supervisor that delegates in turn: research first, then writing.
+model:
+  id: google_genai:gemini-2.5-flash
+  temperature: 0
+  kwargs:
+    include_thoughts: true      # stream Gemini's thinking summaries to the chat
+entry: editor
+agents:
+  - name: editor
+    prompt: |
+      You turn the user's request into a short, accurate piece of writing.
+      1. Ask the researcher for the facts the request needs.
+      2. Give the writer the user's request and those facts.
+      3. Return the writer's text. Never add facts the researcher did not report.
+      For a simple question, the researcher's answer alone is enough.
+    workers: [researcher, writer]
+
+  - name: researcher
+    description: Finds facts in the team's notes and reports them with the note they came from.
+    prompt: |
+      Search the notes, read the relevant ones, and report the facts with their note's name.
+      Say plainly when the notes do not cover something.
+    tools: [search_notes, read_note]
+
+  - name: writer
+    description: Writes clear, short prose from facts it is given. Has no tools.
+    prompt: Write what you are asked for, using only the facts given to you.
+    # Each agent can have its own model and settings; here a warmer temperature for writing.
+    # Another provider works the same way, e.g. "openai:gpt-4.1-mini" with its API key set
+    # and `pip install langchain-openai`.
+    model:
+      id: google_genai:gemini-2.5-flash
+      temperature: 0.7
+      kwargs: {include_thoughts: true}

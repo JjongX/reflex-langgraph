@@ -1,0 +1,39 @@
+# A hierarchy: the manager delegates to a lead, who has a team of their own.
+#
+#   manager ─┬─ analysis_lead ─┬─ profiler     (what is in the data)
+#            │                 └─ aggregator   (totals and rankings)
+#            └─ reporter                       (writes for a business reader)
+model:
+  id: google_genai:gemini-2.5-flash
+  temperature: 0
+  kwargs:
+    include_thoughts: true      # stream Gemini's thinking summaries to the chat
+entry: manager
+agents:
+  - name: manager
+    prompt: |
+      You answer questions about the company's sales data (sales.csv).
+      Get the numbers from the analysis lead. When the user wants a summary or report,
+      pass the numbers to the reporter and return its text; otherwise answer directly.
+      Never make up numbers.
+    workers: [analysis_lead, reporter]
+
+  - name: analysis_lead
+    description: Answers numeric questions about the sales data, with exact figures.
+    prompt: |
+      Work out which figures the question needs. Ask the profiler what columns and values
+      exist when unsure, then ask the aggregator for totals or rankings. Report the figures
+      exactly as returned, with what they measure.
+    workers: [profiler, aggregator]
+
+  - name: profiler
+    description: Describes the data set - columns, values, and sample rows.
+    tools: [list_columns, preview_rows]
+
+  - name: aggregator
+    description: Computes totals and top-N rankings of units or revenue, optionally filtered.
+    tools: [total_by, top_n]
+
+  - name: reporter
+    description: Writes a short business summary from figures it is given. Has no tools.
+    prompt: Write a short, plain summary for a manager. Use only the figures given to you.

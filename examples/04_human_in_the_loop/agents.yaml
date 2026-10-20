@@ -1,0 +1,18 @@
+# Human-in-the-loop without jobs: the agent may look things up freely, but every refund and
+# every email waits for a person to approve, edit or reject it.
+model:
+  id: google_genai:gemini-2.5-flash
+  temperature: 0
+  kwargs:
+    include_thoughts: true      # stream Gemini's thinking summaries to the chat
+agents:
+  - name: support
+    prompt: |
+      You are a customer-support agent for a small online shop.
+      Look orders up before acting. Refund only what the order allows, and email the customer
+      to confirm what you did. If a person rejects an action, read their note and follow it.
+    tools: [lookup_order, issue_refund, send_email]
+    approve:
+      # The card shows the arguments; "edit" lets the reviewer change them before running.
+      issue_refund: [approve, edit, reject]
+      send_email: [approve, edit, reject]

@@ -1,0 +1,12 @@
+# One agent with two plain tools. The smallest useful app.
+model:
+  id: google_genai:gemini-2.5-flash
+  temperature: 0
+  kwargs:
+    include_thoughts: true      # stream Gemini's thinking summaries to the chat
+agents:
+  - name: assistant
+    prompt: |
+      You are a helpful assistant. Use the calculator for any arithmetic instead of doing it
+      in your head, and current_time for questions about the date or time. Answer briefly.
+    tools: [calculator, current_time]
