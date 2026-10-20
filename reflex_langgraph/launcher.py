@@ -40,7 +40,6 @@ import reflex as rx
 _cfg = json.loads(os.environ.get("{env}") or "{{}}")
 config = rx.Config(
     app_name="{app}",
-    show_built_with_reflex=False,  # no "Built with Reflex" badge in production builds
     plugins=[
         rx.plugins.SitemapPlugin(),
         rx.plugins.RadixThemesPlugin(
